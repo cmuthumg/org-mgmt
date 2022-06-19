@@ -9,14 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.org.mgmt.dto.EmployeeDTO;
 import com.org.mgmt.entity.Employee;
+import com.org.mgmt.entity.Organization;
 import com.org.mgmt.mapper.EmployeeMapper;
+import com.org.mgmt.mapper.OrginazationMapper;
 import com.org.mgmt.repo.EmployeeRepository;
+import com.org.mgmt.repo.OrganizationRepository;
 
 @Service
 public class EmployeeService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private OrganizationRepository organizationRepository;
 
 	public List<EmployeeDTO> getEmployees() {
 		List<EmployeeDTO> employeesDTO = new ArrayList<>();
@@ -35,7 +41,12 @@ public class EmployeeService {
 	}
 
 	public EmployeeDTO saveOrUpdate(EmployeeDTO employeeDTO) {
-		Employee employee = employeeRepository.save(EmployeeMapper.dtoToEntity(employeeDTO));
+		Optional<Organization> organizationOp = organizationRepository.findById(employeeDTO.getOrgId());
+		Employee inputEmployee =EmployeeMapper.dtoToEntity(employeeDTO);
+		if (organizationOp.isPresent()) {
+			inputEmployee.setOrganization(organizationOp.get());
+		}
+		Employee employee = employeeRepository.save(inputEmployee);
 		return EmployeeMapper.entityToDTO(employee);
 	}
 

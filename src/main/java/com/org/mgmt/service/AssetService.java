@@ -9,14 +9,21 @@ import org.springframework.stereotype.Service;
 
 import com.org.mgmt.dto.AssetDTO;
 import com.org.mgmt.entity.Asset;
+import com.org.mgmt.entity.Employee;
+import com.org.mgmt.entity.Organization;
 import com.org.mgmt.mapper.AssetMapper;
+import com.org.mgmt.mapper.EmployeeMapper;
 import com.org.mgmt.repo.AssetRepository;
+import com.org.mgmt.repo.OrganizationRepository;
 
 @Service
 public class AssetService {
 
 	@Autowired
 	private AssetRepository assetRepository;
+	
+	@Autowired
+	private OrganizationRepository organizationRepository;
 
 	public List<AssetDTO> getAssets() {
 		List<AssetDTO> assetsDTO = new ArrayList<>();
@@ -35,7 +42,12 @@ public class AssetService {
 	}
 
 	public AssetDTO saveOrUpdate(AssetDTO assetDTO) {
-		Asset asset = assetRepository.save(AssetMapper.dtoToEntity(assetDTO));
+		Optional<Organization> organizationOp = organizationRepository.findById(assetDTO.getOrgId());
+		Asset assetInComing =AssetMapper.dtoToEntity(assetDTO);
+		if (organizationOp.isPresent()) {
+			assetInComing.setOrganization(organizationOp.get());
+		}
+		Asset asset = assetRepository.save(assetInComing);
 		return AssetMapper.entityToDTO(asset);
 	}
 
