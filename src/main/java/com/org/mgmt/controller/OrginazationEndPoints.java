@@ -34,19 +34,19 @@ public class OrginazationEndPoints {
 	@Autowired
 	AssetService assetService;
 
-	@GetMapping("/organizations")
+	@GetMapping(path = "/organizations", produces = "application/xml")
 	public ResponseEntity<List<OrganizationDTO>> getOrganizations() {
 
 		return ResponseEntity.ok(organizationService.getOrganizations());
 	}
 
-	@GetMapping("/organization/{orgId}")
+	@GetMapping(path = "/organization/{orgId}", produces = "application/xml")
 	public ResponseEntity<OrganizationDTO> getOrganization(@PathVariable("orgId") Long orgId) {
 		return ResponseEntity.ok(organizationService.getOrganization(orgId));
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
-	@PostMapping("/organization/save")
+	@PostMapping(path = "/organization/save", produces = "application/xml")
 	public ResponseEntity<OrganizationDTO> saveOrganization(@RequestBody OrganizationDTO organizationDTO) {
 
 		return ResponseEntity.ok(organizationService.saveOrUpdate(organizationDTO));
@@ -54,29 +54,31 @@ public class OrginazationEndPoints {
 
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
 	@DeleteMapping("/organization/{orgId}")
-	private ResponseEntity<String> deleteByIdOrganization(@PathVariable("orgId") Long orgId) {
+	public ResponseEntity<String> deleteByIdOrganization(@PathVariable("orgId") Long orgId) {
 		try {
+			System.out.println("orgId >"+orgId);
 			organizationService.delete(orgId);
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<String>("Organizations deleted with id: " + orgId, HttpStatus.OK);
 	}
 
 	// Employees
-	@GetMapping("/organization/employees")
+	@GetMapping(path = "/organization/employees", produces = "application/xml")
 	public ResponseEntity<List<EmployeeDTO>> getEmployees() {
 
 		return ResponseEntity.ok(employeeService.getEmployees());
 	}
 
-	@GetMapping("/organization/employee/{orgId}")
+	@GetMapping(path = "/organization/employee/{orgId}", produces = "application/xml")
 	public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable("empId") Long empId) {
 		return ResponseEntity.ok(employeeService.getEmployee(empId));
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
-	@PostMapping("/organization/employee/save")
+	@PostMapping(path = "/organization/employee/save", produces = "application/xml")
 	public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
 
 		return ResponseEntity.ok(employeeService.saveOrUpdate(employeeDTO));
@@ -84,7 +86,7 @@ public class OrginazationEndPoints {
 
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
 	@DeleteMapping("/organization/employee/{orgId}")
-	private ResponseEntity<String> deleteByIdEmployee(@PathVariable("empId") Long empId) {
+	public ResponseEntity<String> deleteByIdEmployee(@PathVariable("empId") Long empId) {
 		try {
 			employeeService.delete(empId);
 		} catch (Exception exception) {
@@ -94,19 +96,19 @@ public class OrginazationEndPoints {
 	}
 
 	// Assets
-	@GetMapping("/organization/assets")
+	@GetMapping(path = "/organization/assets", produces = "application/xml")
 	public ResponseEntity<List<AssetDTO>> getAssets() {
 
 		return ResponseEntity.ok(assetService.getAssets());
 	}
 
-	@GetMapping("/organization/asset/{assetId}")
+	@GetMapping(path = "/organization/asset/{assetId}", produces = "application/xml")
 	public ResponseEntity<AssetDTO> getAsset(@PathVariable("assetId") Long assetId) {
 		return ResponseEntity.ok(assetService.getAsset(assetId));
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
-	@PostMapping("/organization/asset/save")
+	@PostMapping(path = "/organization/asset/save", produces = "application/xml")
 	public ResponseEntity<AssetDTO> saveAsset(@RequestBody AssetDTO assetDTO) {
 
 		return ResponseEntity.ok(assetService.saveOrUpdate(assetDTO));
@@ -114,7 +116,7 @@ public class OrginazationEndPoints {
 
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
 	@DeleteMapping("/organization/asset/{assetId}")
-	private ResponseEntity<String> deleteByIdAsset(@PathVariable("assetId") Long assetId) {
+	public ResponseEntity<String> deleteByIdAsset(@PathVariable("assetId") Long assetId) {
 		try {
 			assetService.delete(assetId);
 		} catch (Exception exception) {

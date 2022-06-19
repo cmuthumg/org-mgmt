@@ -3,6 +3,10 @@ package com.org.mgmt.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement(localName = "organizationDTO")
 public class OrganizationDTO implements Serializable {
 
 	private static final long serialVersionUID = -4848000796976153110L;
@@ -11,7 +15,10 @@ public class OrganizationDTO implements Serializable {
 	private String contactNo;
 	private String emailId;
 	private String address;
+	@JacksonXmlProperty(localName = "employeesDTO")
 	private List<EmployeeDTO> employeesDTO;
+	
+	@JacksonXmlProperty(localName = "assetsDTO")
 	private List<AssetDTO> assetsDTO;
 
 	public Long getOrgId() {

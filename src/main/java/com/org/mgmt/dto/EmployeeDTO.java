@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement(localName = "employeeDTO")
 public class EmployeeDTO implements Serializable {
 
 	private static final long serialVersionUID = 1183291669737670424L;

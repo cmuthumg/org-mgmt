@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement(localName = "assetDTO")
 public class AssetDTO  implements Serializable{
 
 	private static final long serialVersionUID = 3601583832305389640L;

@@ -26,7 +26,7 @@ public class AuthenticationEndPoints {
 	@Autowired
 	JwtProvider tokenProvider;
 
-	@PostMapping("/signin")
+	@PostMapping(path = "/signin", produces = "application/xml")
 	public ResponseEntity<JwtResponseDTO> authenticateUser(@Valid @RequestBody LoginDTO login) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
